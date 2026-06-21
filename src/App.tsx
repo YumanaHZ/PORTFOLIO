@@ -409,12 +409,8 @@ function App() {
       </main>
 
       <footer className={`border-t py-8 relative z-20 ${dark ? 'border-zinc-800 text-zinc-600' : 'border-zinc-200 text-zinc-500'}`}>
-        <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
+        <div className="max-w-5xl mx-auto px-6 flex flex-col items-center justify-center text-sm">
           <p>&copy; {new Date().getFullYear()} Yaafi Yumana</p>
-          <div className="flex items-center gap-3">
-            <a href="https://github.com/YumanaHZ" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className={dark ? 'hover:text-white' : 'hover:text-zinc-900'}><FaGithub size={18} /></a>
-            <a href="https://www.linkedin.com/in/yaafi-yumana-47a26a218?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className={dark ? 'hover:text-white' : 'hover:text-zinc-900'}><FaLinkedin size={18} /></a>
-          </div>
         </div>
       </footer>
     </div>
