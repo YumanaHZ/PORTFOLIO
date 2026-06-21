@@ -1,0 +1,218 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+::selection {
+  background: #7c3aed;
+  color: white;
+}
+
+.neon-bg {
+  --grid: rgba(60, 220, 255, .10);
+  --grid2: rgba(60, 220, 255, .05);
+  --glow: rgba(0, 200, 255, .18);
+  --glow2: rgba(170, 80, 255, .10);
+  --scan: rgba(255,255,255,.035);
+}
+
+.neon-grid {
+  position: fixed;
+  inset: -20%;
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+    linear-gradient(var(--grid2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid2) 1px, transparent 1px);
+  background-size:
+    64px 64px, 64px 64px,
+    16px 16px, 16px 16px;
+  opacity: .9;
+  filter: saturate(1.15);
+  pointer-events: none;
+  transform: translate3d(var(--px, 0px), var(--py, 0px), 0);
+}
+
+.neon-glow {
+  position: fixed;
+  inset: -10%;
+  background:
+    radial-gradient(500px 380px at 30% 40%, var(--glow), transparent 60%),
+    radial-gradient(520px 420px at 70% 55%, var(--glow2), transparent 62%);
+  mix-blend-mode: screen;
+  opacity: .9;
+  pointer-events: none;
+  animation: neon-drift 14s ease-in-out infinite alternate;
+  transform: translate3d(calc(var(--px, 0px) * .6), calc(var(--py, 0px) * .6), 0);
+}
+
+@keyframes neon-drift {
+  0%   { filter: blur(0px); transform: translate3d(calc(var(--px,0px) * .6), calc(var(--py,0px) * .6), 0) translate(0,0); }
+  100% { filter: blur(1px); transform: translate3d(calc(var(--px,0px) * .6), calc(var(--py,0px) * .6), 0) translate(60px,-30px); }
+}
+
+.neon-scanlines {
+  position: fixed;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,0) 0px,
+      rgba(0,0,0,0) 3px,
+      var(--scan) 4px
+    );
+  opacity: .35;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  animation: neon-scan 10s linear infinite;
+}
+
+@keyframes neon-scan {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(24px); }
+}
+
+.neon-vignette {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 45%, transparent 38%, rgba(0,0,0,.65) 92%);
+  pointer-events: none;
+}
+
+.neon-noise {
+  position: fixed;
+  inset: 0;
+  opacity: .06;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(255,255,255,.55) 0.6px, transparent 0.7px),
+    radial-gradient(circle at 80% 30%, rgba(255,255,255,.35) 0.6px, transparent 0.7px),
+    radial-gradient(circle at 30% 80%, rgba(255,255,255,.25) 0.6px, transparent 0.7px),
+    radial-gradient(circle at 70% 75%, rgba(255,255,255,.30) 0.6px, transparent 0.7px);
+  background-size: 140px 140px;
+  animation: neon-grain 1.8s steps(2) infinite;
+}
+
+@keyframes neon-grain {
+  0%   { transform: translate(0,0); }
+  25%  { transform: translate(-6px, 4px); }
+  50%  { transform: translate(4px, -5px); }
+  75%  { transform: translate(-3px, -2px); }
+  100% { transform: translate(0,0); }
+}
+
+.light-bg {
+  --grid: rgba(0, 180, 255, .18);
+  --grid2: rgba(0, 180, 255, .10);
+  --glow: rgba(0, 180, 255, .25);
+  --glow2: rgba(160, 60, 255, .15);
+}
+
+.light-grid {
+  position: fixed;
+  inset: -20%;
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+    linear-gradient(var(--grid2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid2) 1px, transparent 1px);
+  background-size: 64px 64px, 64px 64px, 16px 16px, 16px 16px;
+  mix-blend-mode: normal;
+  opacity: .95;
+  filter: saturate(1.05);
+  pointer-events: none;
+  transform: translate3d(var(--px, 0px), var(--py, 0px), 0);
+}
+
+.light-glow {
+  position: fixed;
+  inset: -20%;
+  background:
+    radial-gradient(600px 400px at 20% 25%, var(--glow), transparent 60%),
+    radial-gradient(700px 500px at 80% 60%, var(--glow2), transparent 60%);
+  mix-blend-mode: screen;
+  filter: saturate(1.2);
+  opacity: .9;
+  pointer-events: none;
+  animation: light-glow-pulse 6s ease-in-out infinite;
+}
+
+@keyframes light-glow-pulse {
+  0%, 100% { transform: scale(1); opacity: .95; }
+  50% { transform: scale(1.04); opacity: 1; }
+}
+
+.light-scanlines {
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,0,0,0) 0px,
+    rgba(0,0,0,0) 2px,
+    rgba(0,0,0,.04) 3px
+  );
+  opacity: .25;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.light-noise {
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(0,0,0,.15) 0.6px, transparent 0.7px),
+    radial-gradient(circle at 70% 60%, rgba(0,0,0,.08) 0.6px, transparent 0.7px);
+  background-size: 140px 140px;
+  opacity: .15;
+  pointer-events: none;
+  filter: contrast(110%);
+}
+
+.marquee-left {
+  animation: marquee-left 24s linear infinite;
+}
+
+.marquee-right {
+  animation: marquee-right 24s linear infinite;
+}
+
+.marquee-left:hover,
+.marquee-right:hover {
+  animation-play-state: paused;
+}
+
+.skill-pill {
+  transition: transform .2s ease, color .2s ease, border-color .2s ease;
+}
+
+.skill-pill:hover {
+  transform: scale(1.12);
+  z-index: 2;
+}
+
+@keyframes marquee-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-33.333%); }
+}
+
+@keyframes marquee-right {
+  from { transform: translateX(-33.333%); }
+  to { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .neon-glow, .neon-scanlines, .neon-noise, .light-glow, .marquee-left, .marquee-right { animation: none !important; }
+}
