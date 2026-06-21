@@ -1,62 +1,59 @@
 # Yaafi Yumana - Personal Portfolio
 
-A clean, minimal, and interactive personal portfolio website showcasing my skills, projects, and experience as a Junior Full-Stack Developer. 
+A minimal, interactive personal portfolio website showcasing my projects, skills, and experience as a Junior Full-Stack Developer.
 
-![Portfolio Preview](./public/images/dashboard.png) <!-- Ganti screenshot nanti jika ada screenshot full page -->
+## Features
 
-## 🌟 Features
+- **Dark & Light Mode:** Custom background handling for different themes.
+  - Dark Mode: Neon grid layout with drifting glow, scanlines, and digital noise.
+  - Light Mode: Clean styling with subtle background effects.
+- **Animations & Interactions:** 
+  - Scroll-triggered reveals powered by Framer Motion.
+  - 3D tilt hover effects on project cards.
+  - Custom canvas-based particle system running in the background.
+  - Auto-scrolling marquees for the tech stack with color-reveal on hover.
+- **Responsive Layout:** Adapts smoothly across mobile, tablet, and desktop viewports.
+- **Lightweight Structure:** Built to be fast, utilizing raw CSS keyframes and minimizing heavy dependencies.
 
-- **Dark & Light Mode:** Seamless theme switching with custom, highly interactive canvas backgrounds.
-  - *Dark Mode:* Neon grid with drifting glow blobs, scanlines, and digital noise.
-  - *Light Mode:* Soft, subtle layout with clean styling and reduced strain.
-- **Micro-Interactions & Animations:** 
-  - Scroll-triggered reveal animations powered by **Framer Motion**.
-  - Interactive 3D tilt effects on project cards.
-  - Custom canvas-based snow/particle system floating in the background.
-  - Brand-colored hover reveals on the auto-scrolling tech stack marquees.
-- **Fully Responsive:** Perfectly optimized for mobile, tablet, and desktop viewing.
-- **Fast & Lightweight:** Built without heavy, unnecessary plugins. Prioritizes raw CSS capabilities and minimal dependencies.
+## Tech Stack
 
-## 💻 Tech Stack
+- **Core:** React 19, Vite, TypeScript
+- **Styling:** Tailwind CSS v4 
+- **Animation:** Framer Motion, CSS Keyframes
+- **Icons:** React Icons
 
-- **Framework:** [React 19](https://react.dev/) + [Vite](https://vitejs.dev/)
-- **Language:** [TypeScript](https://www.typescriptlang.org/)
-- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/) (using native CSS features and `@theme`)
-- **Animation:** [Framer Motion](https://motion.dev/) & CSS Keyframes
-- **Icons:** [React Icons](https://react-icons.github.io/react-icons/) (FontAwesome & SimpleIcons)
-
-## 🚀 Running Locally
+## Running Locally
 
 To run this project on your local machine:
 
-1. **Clone the repository:**
+1. Clone the repository:
    ```bash
    git clone https://github.com/YumanaHZ/portfolio.git
    cd portfolio
    ```
 
-2. **Install dependencies:**
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-3. **Start the development server:**
+3. Start the development server:
    ```bash
    npm run dev
    ```
 
-4. Open your browser and visit `http://localhost:5173`.
+4. Open your browser and navigate to `http://localhost:5173`.
 
-## 📦 Building for Production
+## Building for Production
 
-To build the app for production (generates a `dist` folder):
+To compile the application for production:
 ```bash
 npm run build
 ```
 
-## 🌐 Deployment
+## Deployment
 
-This project is easily deployable to [Vercel](https://vercel.com/) or [Netlify](https://www.netlify.com/). Simply connect your GitHub repository to your Vercel account, and it will automatically build and deploy the application.
+The project is configured out-of-the-box for seamless deployment on platforms like Vercel or Netlify. Connect the repository, and the build settings will be detected automatically.
 
 ---
-*Crafted with ❤️ by Yaafi Yumana*
+Developed by Yaafi Yumana.
