@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { FaGithub, FaLinkedin, FaInstagram, FaEnvelope, FaExternalLinkAlt, FaMoon, FaSun, FaReact, FaNodeJs, FaGitAlt, FaFigma, FaHtml5, FaCss3Alt } from 'react-icons/fa'
 import { SiJavascript, SiTypescript, SiTailwindcss, SiVite, SiFirebase } from 'react-icons/si'
 
@@ -79,6 +80,51 @@ function LightBackground() {
       <div className="light-scanlines" />
       <div className="light-noise" />
     </div>
+  )
+}
+
+function TiltCard({ children, className, href }: { children: React.ReactNode; className?: string; href?: string }) {
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+
+  const mouseXSpring = useSpring(x)
+  const mouseYSpring = useSpring(y)
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['7deg', '-7deg'])
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-7deg', '7deg'])
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const width = rect.width
+    const height = rect.height
+    const mouseX = e.clientX - rect.left
+    const mouseY = e.clientY - rect.top
+    const xPct = mouseX / width - 0.5
+    const yPct = mouseY / height - 0.5
+    x.set(xPct)
+    y.set(yPct)
+  }
+
+  const handleMouseLeave = () => {
+    x.set(0)
+    y.set(0)
+  }
+
+  const Tag = href ? motion.a : motion.div
+  const props = href ? { href, target: '_blank', rel: 'noopener noreferrer' } : {}
+
+  return (
+    <Tag
+      {...props}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+      className={className}
+    >
+      <div style={{ transform: 'translateZ(20px)' }} className="h-full">
+        {children}
+      </div>
+    </Tag>
   )
 }
 
@@ -175,8 +221,14 @@ function App() {
         </div>
       </nav>
 
-      <main className="max-w-5xl mx-auto px-6 relative z-20">
-        <section id="top" className="py-20 sm:py-28">
+      <main className="max-w-5xl mx-auto px-6 relative z-20 overflow-visible">
+        <motion.section 
+          id="top" 
+          className="py-20 sm:py-28"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8 sm:gap-12">
             <img src="/images/profile.png" alt="Yaafi Yumana" className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover shrink-0 ring-4 ring-violet-500/20" />
             <div className="text-center sm:text-left">
@@ -185,18 +237,25 @@ function App() {
               <p className={`max-w-2xl text-base sm:text-lg ${dark ? 'text-zinc-400 leading-relaxed' : 'text-zinc-600 leading-relaxed'}`}>
                 I develop full-stack web applications as a junior developer, focusing on clean code, responsive interfaces, and practical solutions that are reliable and maintainable.
               </p>
-              <div className="flex gap-4 mt-6 justify-center sm:justify-start">
+              <div className="flex gap-4 mt-6 justify-center sm:justify-start items-center">
                 <a href="https://github.com/YumanaHZ" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className={dark ? 'text-zinc-400 hover:text-white' : 'text-zinc-500 hover:text-zinc-900'}><FaGithub size={20} /></a>
                 <a href="https://www.linkedin.com/in/yaafi-yumana-47a26a218?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className={dark ? 'text-zinc-400 hover:text-white' : 'text-zinc-500 hover:text-zinc-900'}><FaLinkedin size={20} /></a>
                 <a href="https://www.instagram.com/yaafiymnaa/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className={dark ? 'text-zinc-400 hover:text-white' : 'text-zinc-500 hover:text-zinc-900'}><FaInstagram size={20} /></a>
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         <hr className={dark ? 'border-zinc-800' : 'border-zinc-200'} />
 
-        <section id="about" className="py-16">
+        <motion.section 
+          id="about" 
+          className="py-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-2xl font-bold mb-6">About Me</h2>
           <div className={`space-y-4 leading-relaxed ${dark ? 'text-zinc-400' : 'text-zinc-600'}`}>
             <p>
@@ -237,19 +296,24 @@ function App() {
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         <hr className={dark ? 'border-zinc-800' : 'border-zinc-200'} />
 
-        <section id="projects" className="py-16">
+        <motion.section 
+          id="projects" 
+          className="py-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-2xl font-bold mb-6">Projects</h2>
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-2 gap-4 perspective-1000">
             {projects.map((p) => (
-              <a
+              <TiltCard
                 key={p.title}
                 href={p.live}
-                target="_blank"
-                rel="noopener noreferrer"
                 className={`block p-5 rounded-xl border transition-colors ${dark ? 'bg-zinc-900/70 border-zinc-800 hover:border-violet-500/50' : 'bg-white border-zinc-200 hover:border-violet-400 shadow-sm'}`}
               >
                 {p.image && (
@@ -275,14 +339,21 @@ function App() {
                     <span key={tag} className={`text-xs px-2 py-0.5 rounded-full ${dark ? 'bg-violet-600/10 text-violet-400' : 'bg-violet-100 text-violet-700'}`}>{tag}</span>
                   ))}
                 </div>
-              </a>
+              </TiltCard>
             ))}
           </div>
-        </section>
+        </motion.section>
 
         <hr className={dark ? 'border-zinc-800' : 'border-zinc-200'} />
 
-        <section id="skills" className="py-16">
+        <motion.section 
+          id="skills" 
+          className="py-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-2xl font-bold mb-6">Skills</h2>
           <div className="space-y-7">
             {Object.entries(skills).map(([category, items]) => {
@@ -306,11 +377,18 @@ function App() {
               )
             })}
           </div>
-        </section>
+        </motion.section>
 
         <hr className={dark ? 'border-zinc-800' : 'border-zinc-200'} />
 
-        <section id="contact" className="py-16">
+        <motion.section 
+          id="contact" 
+          className="py-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-2xl font-bold mb-4">Contact</h2>
           <p className={`mb-6 ${dark ? 'text-zinc-400' : 'text-zinc-600'}`}>Feel free to reach out if you want to chat about a project or idea.</p>
           <div className="flex flex-wrap gap-3">
@@ -327,7 +405,7 @@ function App() {
               <FaInstagram /> Instagram
             </a>
           </div>
-        </section>
+        </motion.section>
       </main>
 
       <footer className={`border-t py-8 relative z-20 ${dark ? 'border-zinc-800 text-zinc-600' : 'border-zinc-200 text-zinc-500'}`}>
