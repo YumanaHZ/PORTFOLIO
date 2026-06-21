@@ -2,7 +2,7 @@
 
 A clean, minimal, and interactive personal portfolio website showcasing my skills, projects, and experience as a Junior Full-Stack Developer. 
 
-![Portfolio Preview](./public/images/profile.png) <!-- Ganti screenshot nanti jika ada screenshot full page -->
+![Portfolio Preview](./public/images/dashboard.png) <!-- Ganti screenshot nanti jika ada screenshot full page -->
 
 ## 🌟 Features
 
