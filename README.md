@@ -1,73 +1,62 @@
-# React + TypeScript + Vite
+# Yaafi Yumana - Personal Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A clean, minimal, and interactive personal portfolio website showcasing my skills, projects, and experience as a Junior Full-Stack Developer. 
 
-Currently, two official plugins are available:
+![Portfolio Preview](./public/images/profile.png) <!-- Ganti screenshot nanti jika ada screenshot full page -->
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🌟 Features
 
-## React Compiler
+- **Dark & Light Mode:** Seamless theme switching with custom, highly interactive canvas backgrounds.
+  - *Dark Mode:* Neon grid with drifting glow blobs, scanlines, and digital noise.
+  - *Light Mode:* Soft, subtle layout with clean styling and reduced strain.
+- **Micro-Interactions & Animations:** 
+  - Scroll-triggered reveal animations powered by **Framer Motion**.
+  - Interactive 3D tilt effects on project cards.
+  - Custom canvas-based snow/particle system floating in the background.
+  - Brand-colored hover reveals on the auto-scrolling tech stack marquees.
+- **Fully Responsive:** Perfectly optimized for mobile, tablet, and desktop viewing.
+- **Fast & Lightweight:** Built without heavy, unnecessary plugins. Prioritizes raw CSS capabilities and minimal dependencies.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 💻 Tech Stack
 
-## Expanding the ESLint configuration
+- **Framework:** [React 19](https://react.dev/) + [Vite](https://vitejs.dev/)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/) (using native CSS features and `@theme`)
+- **Animation:** [Framer Motion](https://motion.dev/) & CSS Keyframes
+- **Icons:** [React Icons](https://react-icons.github.io/react-icons/) (FontAwesome & SimpleIcons)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 Running Locally
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+To run this project on your local machine:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/YumanaHZ/portfolio.git
+   cd portfolio
+   ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+
+4. Open your browser and visit `http://localhost:5173`.
+
+## 📦 Building for Production
+
+To build the app for production (generates a `dist` folder):
+```bash
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🌐 Deployment
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+This project is easily deployable to [Vercel](https://vercel.com/) or [Netlify](https://www.netlify.com/). Simply connect your GitHub repository to your Vercel account, and it will automatically build and deploy the application.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+*Crafted with ❤️ by Yaafi Yumana*
