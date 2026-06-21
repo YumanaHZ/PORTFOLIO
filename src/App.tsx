@@ -10,21 +10,21 @@ const projects = [
 
 const skills = {
   Languages: [
-    { name: 'JavaScript', icon: <SiJavascript /> },
-    { name: 'TypeScript', icon: <SiTypescript /> },
-    { name: 'HTML', icon: <FaHtml5 /> },
-    { name: 'CSS', icon: <FaCss3Alt /> },
+    { name: 'JavaScript', icon: <SiJavascript />, color: 'hover:text-[#F7DF1E]' },
+    { name: 'TypeScript', icon: <SiTypescript />, color: 'hover:text-[#3178C6]' },
+    { name: 'HTML', icon: <FaHtml5 />, color: 'hover:text-[#E34F26]' },
+    { name: 'CSS', icon: <FaCss3Alt />, color: 'hover:text-[#1572B6]' },
   ],
   Frameworks: [
-    { name: 'React', icon: <FaReact /> },
-    { name: 'Tailwind CSS', icon: <SiTailwindcss /> },
-    { name: 'Node.js', icon: <FaNodeJs /> },
+    { name: 'React', icon: <FaReact />, color: 'hover:text-[#61DAFB]' },
+    { name: 'Tailwind CSS', icon: <SiTailwindcss />, color: 'hover:text-[#06B6D4]' },
+    { name: 'Node.js', icon: <FaNodeJs />, color: 'hover:text-[#339933]' },
   ],
   Tools: [
-    { name: 'Git', icon: <FaGitAlt /> },
-    { name: 'Vite', icon: <SiVite /> },
-    { name: 'Figma', icon: <FaFigma /> },
-    { name: 'Firebase', icon: <SiFirebase /> },
+    { name: 'Git', icon: <FaGitAlt />, color: 'hover:text-[#F05032]' },
+    { name: 'Vite', icon: <SiVite />, color: 'hover:text-[#646CFF]' },
+    { name: 'Figma', icon: <FaFigma />, color: 'hover:text-[#F24E1E]' },
+    { name: 'Firebase', icon: <SiFirebase />, color: 'hover:text-[#FFCA28]' },
   ],
 }
 
@@ -222,8 +222,8 @@ function App() {
       </nav>
 
       <main className="max-w-5xl mx-auto px-6 relative z-20 overflow-visible">
-        <motion.section 
-          id="top" 
+        <motion.section
+          id="top"
           className="py-20 sm:py-28"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -248,8 +248,8 @@ function App() {
 
         <hr className={dark ? 'border-zinc-800' : 'border-zinc-200'} />
 
-        <motion.section 
-          id="about" 
+        <motion.section
+          id="about"
           className="py-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -300,8 +300,8 @@ function App() {
 
         <hr className={dark ? 'border-zinc-800' : 'border-zinc-200'} />
 
-        <motion.section 
-          id="projects" 
+        <motion.section
+          id="projects"
           className="py-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -346,8 +346,8 @@ function App() {
 
         <hr className={dark ? 'border-zinc-800' : 'border-zinc-200'} />
 
-        <motion.section 
-          id="skills" 
+        <motion.section
+          id="skills"
           className="py-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -366,8 +366,8 @@ function App() {
                   <div className="overflow-hidden py-2">
                     <div className={`flex w-max gap-4 ${direction}`}>
                       {repeated.map((skill, i) => (
-                        <span key={`${skill.name}-${i}`} className={`skill-pill inline-flex items-center gap-2 px-4 py-2 text-sm rounded-lg shrink-0 ${dark ? 'bg-zinc-900/70 border border-zinc-800' : 'bg-zinc-50 border border-zinc-200'}`}>
-                          <span className={dark ? 'text-violet-400 text-lg' : 'text-violet-600 text-lg'}>{skill.icon}</span>
+                        <span key={`${skill.name}-${i}`} className={`skill-pill group inline-flex items-center gap-2 px-4 py-2 text-sm rounded-lg shrink-0 ${dark ? 'bg-zinc-900/70 border border-zinc-800' : 'bg-zinc-50 border border-zinc-200'}`}>
+                          <span className={`text-lg transition-colors duration-300 ${dark ? 'text-violet-400' : 'text-violet-600'} ${skill.color}`}>{skill.icon}</span>
                           {skill.name}
                         </span>
                       ))}
@@ -381,8 +381,8 @@ function App() {
 
         <hr className={dark ? 'border-zinc-800' : 'border-zinc-200'} />
 
-        <motion.section 
-          id="contact" 
+        <motion.section
+          id="contact"
           className="py-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
