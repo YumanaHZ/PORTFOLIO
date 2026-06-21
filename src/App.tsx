@@ -181,7 +181,7 @@ function App() {
             <img src="/images/profile.png" alt="Yaafi Yumana" className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover shrink-0 ring-4 ring-violet-500/20" />
             <div className="text-center sm:text-left">
               <h1 className="text-3xl sm:text-5xl font-bold mb-3">Yaafi Yumana</h1>
-              <p className={`text-lg sm:text-xl mb-5 ${dark ? 'text-violet-400' : 'text-violet-600'}`}>Junior Full-Stack Developer</p>
+              <p className={`text-lg sm:text-xl mb-5 ${dark ? 'text-violet-400' : 'text-violet-600'}`}>Software Engineer</p>
               <p className={`max-w-2xl text-base sm:text-lg ${dark ? 'text-zinc-400 leading-relaxed' : 'text-zinc-600 leading-relaxed'}`}>
                 I develop full-stack web applications as a junior developer, focusing on clean code, responsive interfaces, and practical solutions that are reliable and maintainable.
               </p>
