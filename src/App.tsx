@@ -1,6 +1,7 @@
+import { GitHubCalendar } from 'react-github-calendar'
 import { useEffect, useRef, useState } from 'react'
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
-import { FaGithub, FaLinkedin, FaInstagram, FaEnvelope, FaExternalLinkAlt, FaMoon, FaSun, FaReact, FaNodeJs, FaGitAlt, FaFigma, FaHtml5, FaCss3Alt } from 'react-icons/fa'
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion'
+import { FaGithub, FaLinkedin, FaInstagram, FaEnvelope, FaExternalLinkAlt, FaMoon, FaSun, FaReact, FaNodeJs, FaGitAlt, FaFigma, FaHtml5, FaCss3Alt, FaChevronDown } from 'react-icons/fa'
 import { SiJavascript, SiTypescript, SiTailwindcss, SiVite, SiFirebase } from 'react-icons/si'
 
 const projects = [
@@ -128,6 +129,37 @@ function TiltCard({ children, className, href }: { children: React.ReactNode; cl
   )
 }
 
+function TypingText({ texts, dark }: { texts: string[]; dark: boolean }) {
+  const [index, setIndex] = useState(0)
+  const [displayed, setDisplayed] = useState('')
+  const [deleting, setDeleting] = useState(false)
+
+  useEffect(() => {
+    const current = texts[index]
+    let timeout: ReturnType<typeof setTimeout>
+
+    if (!deleting && displayed.length < current.length) {
+      timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 80)
+    } else if (!deleting && displayed.length === current.length) {
+      timeout = setTimeout(() => setDeleting(true), 2000)
+    } else if (deleting && displayed.length > 0) {
+      timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 40)
+    } else if (deleting && displayed.length === 0) {
+      setDeleting(false)
+      setIndex((i) => (i + 1) % texts.length)
+    }
+
+    return () => clearTimeout(timeout)
+  }, [displayed, deleting, index, texts])
+
+  return (
+    <span className={dark ? 'text-violet-400' : 'text-violet-600'}>
+      {displayed}
+      <span className="animate-blink">|</span>
+    </span>
+  )
+}
+
 function Snow({ dark }: { dark: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -196,11 +228,13 @@ function Snow({ dark }: { dark: boolean }) {
   return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-10" />
 }
 
+
 function App() {
-  const [dark, setDark] = useState(true)
+  const [dark, setDark] = useState(false)
+  const [showContent, setShowContent] = useState(false)
 
   return (
-    <div className={dark ? 'bg-[#060911] text-zinc-100 min-h-screen relative' : 'bg-[#f6f7fb] text-zinc-900 min-h-screen relative'}>
+    <div className={`${dark ? 'bg-[#060911] text-zinc-100' : 'bg-[#f6f7fb] text-zinc-900'} min-h-screen relative transition-colors duration-500`}>
       {dark ? <NeonGrid /> : <LightBackground />}
       <Snow dark={dark} />
 
@@ -211,6 +245,7 @@ function App() {
             <div className="hidden sm:flex gap-5 text-sm">
               <a href="#about" className={dark ? 'hover:text-violet-400' : 'hover:text-violet-600'}>About</a>
               <a href="#projects" className={dark ? 'hover:text-violet-400' : 'hover:text-violet-600'}>Projects</a>
+              <a href="#contributions" className={dark ? 'hover:text-violet-400' : 'hover:text-violet-600'}>Contributions</a>
               <a href="#skills" className={dark ? 'hover:text-violet-400' : 'hover:text-violet-600'}>Skills</a>
               <a href="#contact" className={dark ? 'hover:text-violet-400' : 'hover:text-violet-600'}>Contact</a>
             </div>
@@ -232,8 +267,10 @@ function App() {
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8 sm:gap-12">
             <img src="/images/profile.png" alt="Yaafi Yumana" className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover shrink-0 ring-4 ring-violet-500/20" />
             <div className="text-center sm:text-left">
-              <h1 className="text-3xl sm:text-5xl font-bold mb-3">Yaafi Yumana</h1>
-              <p className={`text-lg sm:text-xl mb-5 ${dark ? 'text-violet-400' : 'text-violet-600'}`}>Software Engineer</p>
+              <h1 className="text-3xl sm:text-5xl font-bold mb-3 bg-gradient-to-r from-violet-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">Yaafi Yumana</h1>
+              <p className="text-lg sm:text-xl mb-5 h-8">
+                <TypingText texts={['Software Engineer', 'Junior Full-Stack Developer']} dark={dark} />
+              </p>
               <p className={`max-w-2xl text-base sm:text-lg ${dark ? 'text-zinc-400 leading-relaxed' : 'text-zinc-600 leading-relaxed'}`}>
                 I develop full-stack web applications as a junior developer, focusing on clean code, responsive interfaces, and practical solutions that are reliable and maintainable.
               </p>
@@ -246,17 +283,51 @@ function App() {
           </div>
         </motion.section>
 
-        <hr className={dark ? 'border-zinc-800' : 'border-zinc-200'} />
+        <motion.div
+          className="flex justify-center pb-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 0.8 }}
+        >
+          <button
+            onClick={() => {
+              setShowContent(true)
+              setTimeout(() => {
+                document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+              }, 100)
+            }}
+            className={`flex flex-col items-center gap-1 text-xs ${dark ? 'text-zinc-500 hover:text-violet-400' : 'text-zinc-400 hover:text-violet-600'} transition-colors cursor-pointer`}
+          >
+            <span>Scroll Down</span>
+            <motion.span
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <FaChevronDown />
+            </motion.span>
+          </button>
+        </motion.div>
 
-        <motion.section
-          id="about"
+        <AnimatePresence>
+          {showContent && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.8, ease: 'easeInOut' }}
+              className="overflow-hidden"
+            >
+              <hr className={dark ? 'border-zinc-800' : 'border-zinc-200'} />
+
+              <motion.section
+                id="about"
           className="py-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-2xl font-bold mb-6">About Me</h2>
+          <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent">About Me</h2>
           <div className={`space-y-4 leading-relaxed ${dark ? 'text-zinc-400' : 'text-zinc-600'}`}>
             <p>
               I am Yaafi Yumana, a junior full-stack developer based in Indonesia with an interest in building reliable, user-focused web applications. I work across both frontend and backend development, creating clean interfaces while also considering application structure, performance, and maintainability.
@@ -266,31 +337,35 @@ function App() {
             </p>
           </div>
 
-          <div className={`mt-8 p-5 rounded-xl ${dark ? 'bg-zinc-900/70 border border-zinc-800' : 'bg-zinc-50 border border-zinc-200'}`}>
-            <h3 className="font-semibold mb-4">Education</h3>
-            <div className="relative pl-6">
-              <div className={`absolute left-[7px] top-2 bottom-2 w-px ${dark ? 'bg-zinc-700' : 'bg-zinc-300'}`} />
-
-              <div className="relative mb-6">
-                <div className={`absolute -left-6 top-1.5 w-3 h-3 rounded-full border-2 ${dark ? 'border-violet-400 bg-zinc-900' : 'border-violet-600 bg-zinc-50'}`} />
-                <div className="flex items-center gap-4">
-                  <img src="/images/pnc.png" alt="Politeknik Negeri Cilacap" className="w-12 h-12 rounded-lg object-cover shrink-0" />
-                  <div>
+          <div className={`mt-8 space-y-6`}>
+            <h3 className="font-semibold mb-4 text-lg">Education</h3>
+            <div className="relative">
+              <div className={`absolute left-[88px] top-0 bottom-0 w-px ${dark ? 'bg-zinc-700' : 'bg-zinc-300'}`} />
+              
+              <div className="space-y-6">
+                <div className="flex gap-8 items-start">
+                  <div className={`w-20 flex-shrink-0 text-right ${dark ? 'text-zinc-500' : 'text-zinc-600'}`}>
+                    <p className="text-sm font-medium">2025</p>
+                    <p className="text-xs">Present</p>
+                  </div>
+                  <div className={`relative flex-1 p-4 rounded-lg border ${dark ? 'bg-zinc-900/70 border-zinc-800' : 'bg-white border-zinc-200 shadow-sm hover:shadow-md'} transition-all`}>
+                    <div className={`absolute -left-[21px] top-5 w-2.5 h-2.5 rounded-full border-2 ${dark ? 'border-violet-400 bg-zinc-900' : 'border-violet-600 bg-white'}`} />
+                    <img src="/images/pnc.png" alt="Politeknik Negeri Cilacap" className="w-10 h-10 rounded-lg object-cover mb-2" />
                     <a href="https://pnc.ac.id/" target="_blank" rel="noopener noreferrer" className={`font-medium ${dark ? 'text-violet-400 hover:text-violet-300' : 'text-violet-600 hover:text-violet-700'}`}>Politeknik Negeri Cilacap</a>
-                    <p className={`text-sm ${dark ? 'text-zinc-500' : 'text-zinc-500'}`}>Software Engineering</p>
-                    <p className={`text-xs ${dark ? 'text-zinc-600' : 'text-zinc-400'}`}>2025 – Now</p>
+                    <p className={`text-sm mt-1 ${dark ? 'text-zinc-500' : 'text-zinc-600'}`}>Software Engineering</p>
                   </div>
                 </div>
-              </div>
 
-              <div className="relative">
-                <div className={`absolute -left-6 top-1.5 w-3 h-3 rounded-full border-2 ${dark ? 'border-violet-400 bg-zinc-900' : 'border-violet-600 bg-zinc-50'}`} />
-                <div className="flex items-center gap-4">
-                  <img src="/images/smkn1skw.png" alt="SMK Negeri 1 Singkawang" className="w-12 h-12 rounded-lg object-cover shrink-0" />
-                  <div>
+                <div className="flex gap-8 items-start">
+                  <div className={`w-20 flex-shrink-0 text-right ${dark ? 'text-zinc-500' : 'text-zinc-600'}`}>
+                    <p className="text-sm font-medium">2021</p>
+                    <p className="text-xs">2024</p>
+                  </div>
+                  <div className={`relative flex-1 p-4 rounded-lg border ${dark ? 'bg-zinc-900/70 border-zinc-800' : 'bg-white border-zinc-200 shadow-sm hover:shadow-md'} transition-all`}>
+                    <div className={`absolute -left-[21px] top-5 w-2.5 h-2.5 rounded-full border-2 ${dark ? 'border-violet-400 bg-zinc-900' : 'border-violet-600 bg-white'}`} />
+                    <img src="/images/smkn1skw.png" alt="SMK Negeri 1 Singkawang" className="w-10 h-10 rounded-lg object-cover mb-2" />
                     <a href="https://smkn1singkawang.sch.id/" target="_blank" rel="noopener noreferrer" className={`font-medium ${dark ? 'text-violet-400 hover:text-violet-300' : 'text-violet-600 hover:text-violet-700'}`}>SMK Negeri 1 Singkawang</a>
-                    <p className={`text-sm ${dark ? 'text-zinc-500' : 'text-zinc-500'}`}>Electrical Power Installation Engineering</p>
-                    <p className={`text-xs ${dark ? 'text-zinc-600' : 'text-zinc-400'}`}>2021 – 2024</p>
+                    <p className={`text-sm mt-1 ${dark ? 'text-zinc-500' : 'text-zinc-600'}`}>Electrical Power Installation Engineering</p>
                   </div>
                 </div>
               </div>
@@ -308,13 +383,19 @@ function App() {
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-2xl font-bold mb-6">Projects</h2>
+          <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent">Projects</h2>
           <div className="grid sm:grid-cols-2 gap-4 perspective-1000">
-            {projects.map((p) => (
-              <TiltCard
+            {projects.map((p, i) => (
+              <motion.div
                 key={p.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.15 }}
+              >
+              <TiltCard
                 href={p.live}
-                className={`block p-5 rounded-xl border transition-colors ${dark ? 'bg-zinc-900/70 border-zinc-800 hover:border-violet-500/50' : 'bg-white border-zinc-200 hover:border-violet-400 shadow-sm'}`}
+                className={`block p-5 rounded-xl border transition-all duration-300 ${dark ? 'bg-zinc-900/70 border-zinc-800 hover:border-violet-500/50 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)]' : 'bg-white border-zinc-200 hover:border-violet-400 hover:shadow-[0_0_30px_rgba(139,92,246,0.1)] shadow-sm'}`}
               >
                 {p.image && (
                   <img src={p.image} alt={`${p.title} dashboard`} className="mb-4 aspect-video w-full rounded-lg object-cover border border-zinc-200/20" />
@@ -340,7 +421,27 @@ function App() {
                   ))}
                 </div>
               </TiltCard>
+              </motion.div>
             ))}
+          </div>
+        </motion.section>
+
+        <hr className={dark ? 'border-zinc-800' : 'border-zinc-200'} />
+
+        <motion.section
+          id="contributions"
+          className="py-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent">Contributions</h2>
+          <div className={`p-6 rounded-xl border ${dark ? 'bg-zinc-900/70 border-zinc-800' : 'bg-white border-zinc-200 shadow-sm'} flex justify-center overflow-x-auto`}>
+            <GitHubCalendar
+              username="YumanaHZ"
+              colorScheme={dark ? 'dark' : 'light'}
+            />
           </div>
         </motion.section>
 
@@ -354,7 +455,7 @@ function App() {
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-2xl font-bold mb-6">Skills</h2>
+          <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent">Skills</h2>
           <div className="space-y-7">
             {Object.entries(skills).map(([category, items]) => {
               const direction = category === 'Frameworks' ? 'marquee-right' : 'marquee-left'
@@ -389,7 +490,7 @@ function App() {
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-2xl font-bold mb-4">Contact</h2>
+          <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent">Contact</h2>
           <p className={`mb-6 ${dark ? 'text-zinc-400' : 'text-zinc-600'}`}>Feel free to reach out if you want to chat about a project or idea.</p>
           <div className="flex flex-wrap gap-3">
             <a href="mailto:yumanayaafi@gmail.com" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-violet-600 text-white hover:bg-violet-700">
@@ -406,6 +507,9 @@ function App() {
             </a>
           </div>
         </motion.section>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
 
       <footer className={`border-t py-8 relative z-20 ${dark ? 'border-zinc-800 text-zinc-600' : 'border-zinc-200 text-zinc-500'}`}>
