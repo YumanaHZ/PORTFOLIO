@@ -1,7 +1,7 @@
 import { GitHubCalendar } from 'react-github-calendar'
 import { useEffect, useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion'
-import { FaGithub, FaLinkedin, FaInstagram, FaEnvelope, FaExternalLinkAlt, FaMoon, FaSun, FaReact, FaNodeJs, FaGitAlt, FaFigma, FaHtml5, FaCss3Alt, FaChevronDown } from 'react-icons/fa'
+import { FaGithub, FaLinkedin, FaInstagram, FaEnvelope, FaExternalLinkAlt, FaMoon, FaSun, FaReact, FaNodeJs, FaGitAlt, FaFigma, FaHtml5, FaCss3Alt, FaChevronDown, FaChevronUp } from 'react-icons/fa'
 import { SiJavascript, SiTypescript, SiTailwindcss, SiVite, SiFirebase } from 'react-icons/si'
 
 const projects = [
@@ -291,19 +291,24 @@ function App() {
         >
           <button
             onClick={() => {
-              setShowContent(true)
-              setTimeout(() => {
-                document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
-              }, 100)
+              if (!showContent) {
+                setShowContent(true)
+                setTimeout(() => {
+                  document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+                }, 100)
+              } else {
+                setShowContent(false)
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              }
             }}
             className={`flex flex-col items-center gap-1 text-xs ${dark ? 'text-zinc-500 hover:text-violet-400' : 'text-zinc-400 hover:text-violet-600'} transition-colors cursor-pointer`}
           >
-            <span>Scroll Down</span>
+            <span>{showContent ? 'Show Less' : 'Show More'}</span>
             <motion.span
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+              animate={showContent ? { y: 0 } : { y: [0, 6, 0] }}
+              transition={{ duration: 1.5, repeat: showContent ? 0 : Infinity, ease: 'easeInOut' }}
             >
-              <FaChevronDown />
+              {showContent ? <FaChevronUp /> : <FaChevronDown />}
             </motion.span>
           </button>
         </motion.div>
