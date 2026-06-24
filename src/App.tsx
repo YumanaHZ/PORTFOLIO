@@ -2,7 +2,7 @@ import { GitHubCalendar } from 'react-github-calendar'
 import { useEffect, useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion'
 import { FaGithub, FaLinkedin, FaInstagram, FaEnvelope, FaExternalLinkAlt, FaMoon, FaSun, FaReact, FaNodeJs, FaGitAlt, FaFigma, FaHtml5, FaCss3Alt, FaChevronDown, FaChevronUp } from 'react-icons/fa'
-import { SiJavascript, SiTypescript, SiTailwindcss, SiVite, SiFirebase } from 'react-icons/si'
+import { SiJavascript, SiTypescript, SiTailwindcss, SiVite, SiFirebase, SiSupabase } from 'react-icons/si'
 
 const projects = [
   { title: 'TemuKopi', desc: 'A coffee discovery platform to explore local coffee shops, menus, and community reviews.', tags: ['React', 'TypeScript', 'Vite', 'Tailwind CSS'], github: 'https://github.com/YumanaHZ/TemuKopi-Project', live: 'https://temukopi.potydev.cloud', image: '/images/temukopi-dashboard.png' },
@@ -26,6 +26,7 @@ const skills = {
     { name: 'Vite', icon: <SiVite />, color: 'hover:text-[#646CFF]' },
     { name: 'Figma', icon: <FaFigma />, color: 'hover:text-[#F24E1E]' },
     { name: 'Firebase', icon: <SiFirebase />, color: 'hover:text-[#FFCA28]' },
+    { name: 'Supabase', icon: <SiSupabase />, color: 'hover:text-[#3ECF8E]' },
   ],
 }
 
