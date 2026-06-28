@@ -1,7 +1,7 @@
 import { GitHubCalendar } from 'react-github-calendar'
 import { useEffect, useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion'
-import { FaGithub, FaLinkedin, FaInstagram, FaEnvelope, FaExternalLinkAlt, FaMoon, FaSun, FaReact, FaNodeJs, FaGitAlt, FaFigma, FaHtml5, FaCss3Alt, FaChevronDown, FaChevronUp } from 'react-icons/fa'
+import { FaGithub, FaLinkedin, FaInstagram, FaEnvelope, FaExternalLinkAlt, FaMoon, FaSun, FaReact, FaNodeJs, FaGitAlt, FaFigma, FaHtml5, FaCss3Alt, FaChevronDown, FaChevronUp, FaVolumeUp, FaVolumeMute } from 'react-icons/fa'
 import { SiJavascript, SiTypescript, SiTailwindcss, SiVite, SiFirebase, SiSupabase } from 'react-icons/si'
 
 const projects = [
@@ -233,6 +233,40 @@ function Snow({ dark }: { dark: boolean }) {
 function App() {
   const [dark, setDark] = useState(false)
   const [showContent, setShowContent] = useState(false)
+  const [playing, setPlaying] = useState(false)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    const audio = new Audio('/backsound.mp3')
+    audio.loop = true
+    audio.volume = 0.02
+    audioRef.current = audio
+    const playPromise = audio.play()
+    if (playPromise) {
+      playPromise.then(() => setPlaying(true)).catch(() => {
+        const resume = () => {
+          audio.play().then(() => setPlaying(true))
+          document.removeEventListener('click', resume)
+        }
+        document.addEventListener('click', resume)
+      })
+    }
+    return () => {
+      audio.pause()
+      audio.src = ''
+    }
+  }, [])
+
+  const toggleMusic = () => {
+    const audio = audioRef.current
+    if (!audio) return
+    if (playing) {
+      audio.pause()
+    } else {
+      audio.play()
+    }
+    setPlaying(!playing)
+  }
 
   return (
     <div className={`${dark ? 'bg-[#060911] text-zinc-100' : 'bg-[#f6f7fb] text-zinc-900'} min-h-screen relative transition-colors duration-500`}>
@@ -523,6 +557,14 @@ function App() {
           <p>&copy; {new Date().getFullYear()} Yaafi Yumana</p>
         </div>
       </footer>
+
+      <button
+        onClick={toggleMusic}
+        className={`fixed bottom-6 right-6 z-50 p-3 rounded-full shadow-lg transition-all duration-300 ${dark ? 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300' : 'bg-white hover:bg-zinc-100 text-zinc-700 border border-zinc-200'}`}
+        aria-label="Toggle Music"
+      >
+        {playing ? <FaVolumeUp className="text-lg" /> : <FaVolumeMute className="text-lg" />}
+      </button>
     </div>
   )
 }
