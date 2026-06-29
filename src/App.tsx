@@ -1,6 +1,6 @@
 import { GitHubCalendar } from 'react-github-calendar'
 import { useEffect, useRef, useState } from 'react'
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence, useScroll } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence, useScroll, type Variants } from 'framer-motion'
 import { FaGithub, FaLinkedin, FaInstagram, FaEnvelope, FaExternalLinkAlt, FaReact, FaNodeJs, FaGitAlt, FaFigma, FaHtml5, FaCss3Alt, FaChevronDown, FaChevronUp, FaVolumeUp, FaVolumeMute } from 'react-icons/fa'
 import { SiJavascript, SiTypescript, SiTailwindcss, SiVite, SiFirebase, SiSupabase } from 'react-icons/si'
 
@@ -30,19 +30,19 @@ const skills = {
   ],
 }
 
-const sectionReveal = {
-  hidden: { opacity: 0, y: 60, scale: 0.97, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+const sectionReveal: Variants = {
+  hidden: { opacity: 0, y: 60, scale: 0.97, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const } },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const } },
 }
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: { transition: { staggerChildren: 0.08, staggerDirection: -1 } },
   visible: { transition: { staggerChildren: 0.12 } },
 }
 
-const staggerItem = {
+const staggerItem: Variants = {
   hidden: { opacity: 0, y: 30, transition: { duration: 0.3 } },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const } },
 }
 
 function Preloader({ dark, onDone }: { dark: boolean; onDone: () => void }) {
@@ -209,8 +209,10 @@ function TypingText({ texts, dark }: { texts: string[]; dark: boolean }) {
     } else if (deleting && displayed.length > 0) {
       timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 40)
     } else if (deleting && displayed.length === 0) {
-      setDeleting(false)
-      setIndex((i) => (i + 1) % texts.length)
+      timeout = setTimeout(() => {
+        setDeleting(false)
+        setIndex((i) => (i + 1) % texts.length)
+      }, 0)
     }
 
     return () => clearTimeout(timeout)
@@ -654,7 +656,7 @@ function App() {
           className="py-20 sm:py-28"
           initial={{ opacity: 0, y: 50, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: loading ? 2.2 : 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as const, delay: loading ? 2.2 : 0 }}
         >
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8 sm:gap-12">
             <motion.img
