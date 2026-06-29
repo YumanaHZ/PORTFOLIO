@@ -1,11 +1,15 @@
 import { useEffect, useRef } from 'react'
 
-interface Particle {
+interface Leaf {
   x: number
   y: number
-  vx: number
-  vy: number
   size: number
+  rotation: number
+  rotationSpeed: number
+  fallSpeed: number
+  swaySpeed: number
+  swayAmplitude: number
+  swayOffset: number
   opacity: number
   color: string
 }
@@ -20,113 +24,101 @@ export default function ParticleBackground() {
     if (!ctx) return
 
     let animId: number
-    let particles: Particle[] = []
-    let mouse = { x: -1000, y: -1000 }
+    let leaves: Leaf[] = []
+    let time = 0
 
-    const colors = ['#7c3aed', '#ec4899', '#06b6d4', '#a78bfa', '#f472b6']
+    const colors = ['#22c55e', '#16a34a', '#65a30d', '#ca8a04', '#dc2626', '#ea580c']
 
     const resize = () => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
     }
 
-    const createParticles = () => {
-      const count = Math.min(Math.floor((canvas.width * canvas.height) / 15000), 100)
-      particles = Array.from({ length: count }, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        size: Math.random() * 2 + 0.5,
-        opacity: Math.random() * 0.5 + 0.1,
-        color: colors[Math.floor(Math.random() * colors.length)],
-      }))
+    const createLeaf = (randomY = false): Leaf => ({
+      x: Math.random() * canvas.width,
+      y: randomY ? Math.random() * canvas.height : -20 - Math.random() * 50,
+      size: Math.random() * 12 + 8,
+      rotation: Math.random() * Math.PI * 2,
+      rotationSpeed: (Math.random() - 0.5) * 0.03,
+      fallSpeed: Math.random() * 0.8 + 0.3,
+      swaySpeed: Math.random() * 0.015 + 0.005,
+      swayAmplitude: Math.random() * 40 + 20,
+      swayOffset: Math.random() * Math.PI * 2,
+      opacity: Math.random() * 0.4 + 0.3,
+      color: colors[Math.floor(Math.random() * colors.length)],
+    })
+
+    const createLeaves = () => {
+      const count = Math.min(Math.floor((canvas.width * canvas.height) / 25000), 40)
+      leaves = Array.from({ length: count }, () => createLeaf(true))
     }
 
-    const drawParticle = (p: Particle) => {
+    const drawLeaf = (leaf: Leaf) => {
+      ctx.save()
+      ctx.translate(leaf.x, leaf.y)
+      ctx.rotate(leaf.rotation)
+      ctx.globalAlpha = leaf.opacity
+
       ctx.beginPath()
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-      ctx.fillStyle = p.color
-      ctx.globalAlpha = p.opacity
+      ctx.moveTo(0, -leaf.size)
+      ctx.bezierCurveTo(
+        leaf.size * 0.6, -leaf.size * 0.6,
+        leaf.size * 0.8, leaf.size * 0.2,
+        0, leaf.size
+      )
+      ctx.bezierCurveTo(
+        -leaf.size * 0.8, leaf.size * 0.2,
+        -leaf.size * 0.6, -leaf.size * 0.6,
+        0, -leaf.size
+      )
+      ctx.fillStyle = leaf.color
       ctx.fill()
-    }
 
-    const drawConnections = () => {
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x
-          const dy = particles[i].y - particles[j].y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < 120) {
-            ctx.beginPath()
-            ctx.moveTo(particles[i].x, particles[i].y)
-            ctx.lineTo(particles[j].x, particles[j].y)
-            ctx.strokeStyle = '#7c3aed'
-            ctx.globalAlpha = (1 - dist / 120) * 0.15
-            ctx.lineWidth = 0.5
-            ctx.stroke()
-          }
-        }
+      ctx.beginPath()
+      ctx.moveTo(0, -leaf.size * 0.8)
+      ctx.lineTo(0, leaf.size * 0.8)
+      ctx.strokeStyle = leaf.color
+      ctx.globalAlpha = leaf.opacity * 0.5
+      ctx.lineWidth = 0.5
+      ctx.stroke()
 
-        const mdx = particles[i].x - mouse.x
-        const mdy = particles[i].y - mouse.y
-        const mDist = Math.sqrt(mdx * mdx + mdy * mdy)
-        if (mDist < 200) {
-          ctx.beginPath()
-          ctx.moveTo(particles[i].x, particles[i].y)
-          ctx.lineTo(mouse.x, mouse.y)
-          ctx.strokeStyle = '#ec4899'
-          ctx.globalAlpha = (1 - mDist / 200) * 0.3
-          ctx.lineWidth = 0.8
-          ctx.stroke()
-        }
-      }
+      ctx.restore()
     }
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
+      time += 1
 
-      particles.forEach((p) => {
-        p.x += p.vx
-        p.y += p.vy
+      leaves.forEach((leaf) => {
+        leaf.y += leaf.fallSpeed
+        leaf.x += Math.sin(time * leaf.swaySpeed + leaf.swayOffset) * leaf.swayAmplitude * 0.02
+        leaf.rotation += leaf.rotationSpeed
 
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1
-
-        const mdx = p.x - mouse.x
-        const mdy = p.y - mouse.y
-        const mDist = Math.sqrt(mdx * mdx + mdy * mdy)
-        if (mDist < 150) {
-          p.x += (mdx / mDist) * 0.5
-          p.y += (mdy / mDist) * 0.5
+        if (leaf.y > canvas.height + 30) {
+          Object.assign(leaf, createLeaf(false))
         }
 
-        drawParticle(p)
+        drawLeaf(leaf)
       })
 
-      drawConnections()
       ctx.globalAlpha = 1
       animId = requestAnimationFrame(animate)
     }
 
-    const handleMouse = (e: MouseEvent) => {
-      mouse = { x: e.clientX, y: e.clientY }
-    }
-
     resize()
-    createParticles()
+    createLeaves()
     animate()
 
-    window.addEventListener('resize', () => {
+    const handleResize = () => {
       resize()
-      createParticles()
-    })
-    window.addEventListener('mousemove', handleMouse)
+      createLeaves()
+    }
+
+    window.addEventListener('resize', handleResize)
 
     return () => {
       cancelAnimationFrame(animId)
-      window.removeEventListener('resize', resize)
-      window.removeEventListener('mousemove', handleMouse)
+      window.removeEventListener('resize', handleResize)
     }
   }, [])
 

@@ -16,10 +16,229 @@ body {
 }
 
 ::selection {
-  background: #7c3aed;
-  color: white;
+  background: #39ff14;
+  color: #0a1a0a;
 }
 
+/* ── Cursor Glow ── */
+.cursor-glow {
+  position: fixed;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: opacity .3s;
+}
+
+.cursor-glow.dark {
+  background: radial-gradient(circle, rgba(139,92,246,.3) 0%, rgba(139,92,246,.1) 40%, transparent 70%);
+  mix-blend-mode: screen;
+}
+
+.cursor-glow.light {
+  background: radial-gradient(circle, rgba(0,0,0,.04) 0%, rgba(0,0,0,.02) 35%, transparent 65%);
+  mix-blend-mode: multiply;
+}
+
+/* ── Scroll Progress Bar ── */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  z-index: 9999;
+  transition: width .05s linear;
+}
+
+.scroll-progress.dark {
+  background: linear-gradient(90deg, #7c3aed, #ec4899, #06b6d4);
+}
+
+.scroll-progress.light {
+  background: linear-gradient(90deg, #065f46, #047857, #059669);
+}
+
+/* ── Custom Scrollbar ── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dark-mode::-webkit-scrollbar-thumb {
+  background: #7c3aed;
+  border-radius: 4px;
+}
+
+.light-mode::-webkit-scrollbar-thumb {
+  background: #166534;
+  border-radius: 4px;
+}
+
+.dark-mode::-webkit-scrollbar-thumb:hover {
+  background: #a78bfa;
+}
+
+.light-mode::-webkit-scrollbar-thumb:hover {
+  background: #15803d;
+}
+
+/* ── Animated Gradient Border ── */
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.gradient-border {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 1.5px;
+  background: conic-gradient(from var(--border-angle), transparent 25%, var(--gb-color1) 50%, var(--gb-color2) 75%, transparent 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: rotate-border 4s linear infinite;
+  pointer-events: none;
+}
+
+.gradient-border.dark::before {
+  --gb-color1: #7c3aed;
+  --gb-color2: #ec4899;
+}
+
+.gradient-border.light::before {
+  --gb-color1: #059669;
+  --gb-color2: #065f46;
+}
+
+@keyframes rotate-border {
+  to { --border-angle: 360deg; }
+}
+
+/* ── Card Shimmer Effect ── */
+.card-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255,255,255,.08) 45%,
+    rgba(255,255,255,.15) 50%,
+    rgba(255,255,255,.08) 55%,
+    transparent 60%
+  );
+  transform: translateX(-100%);
+  transition: none;
+  pointer-events: none;
+}
+
+.card-shimmer:hover::after {
+  animation: shimmer .8s ease forwards;
+}
+
+@keyframes shimmer {
+  to { transform: translateX(100%); }
+}
+
+/* ── Preloader ── */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.preloader.dark {
+  background: #060911;
+}
+
+.preloader.light {
+  background: #39ff14;
+}
+
+.preloader-ring {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  animation: preloader-spin 1s linear infinite;
+}
+
+.preloader-ring.dark {
+  border-top-color: #7c3aed;
+  border-right-color: #ec4899;
+}
+
+.preloader-ring.light {
+  border-top-color: #065f46;
+  border-right-color: #047857;
+}
+
+@keyframes preloader-spin {
+  to { transform: rotate(360deg); }
+}
+
+.preloader-text {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  animation: preloader-pulse 1.5s ease-in-out infinite;
+}
+
+.preloader-text.dark {
+  color: #a78bfa;
+}
+
+.preloader-text.light {
+  color: #065f46;
+}
+
+@keyframes preloader-pulse {
+  0%, 100% { opacity: .4; }
+  50% { opacity: 1; }
+}
+
+/* ── Section reveal (used with framer-motion, classes for stagger children) ── */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(.9);
+}
+
+/* ── Neon BG (dark mode) ── */
 .neon-bg {
   --grid: rgba(60, 220, 255, .10);
   --grid2: rgba(60, 220, 255, .05);
@@ -114,11 +333,12 @@ body {
   100% { transform: translate(0,0); }
 }
 
+/* ── Light BG (neon green) ── */
 .light-bg {
-  --grid: rgba(0, 180, 255, .18);
-  --grid2: rgba(0, 180, 255, .10);
-  --glow: rgba(0, 180, 255, .25);
-  --glow2: rgba(160, 60, 255, .15);
+  --grid: rgba(0, 80, 0, .10);
+  --grid2: rgba(0, 80, 0, .05);
+  --glow: rgba(0, 100, 0, .12);
+  --glow2: rgba(0, 60, 0, .08);
 }
 
 .light-grid {
@@ -143,9 +363,9 @@ body {
   background:
     radial-gradient(600px 400px at 20% 25%, var(--glow), transparent 60%),
     radial-gradient(700px 500px at 80% 60%, var(--glow2), transparent 60%);
-  mix-blend-mode: screen;
+  mix-blend-mode: multiply;
   filter: saturate(1.2);
-  opacity: .9;
+  opacity: .6;
   pointer-events: none;
   animation: light-glow-pulse 6s ease-in-out infinite;
 }
@@ -162,9 +382,9 @@ body {
     to bottom,
     rgba(0,0,0,0) 0px,
     rgba(0,0,0,0) 2px,
-    rgba(0,0,0,.04) 3px
+    rgba(0,60,0,.04) 3px
   );
-  opacity: .25;
+  opacity: .2;
   mix-blend-mode: multiply;
   pointer-events: none;
 }
@@ -173,14 +393,15 @@ body {
   position: fixed;
   inset: 0;
   background-image:
-    radial-gradient(circle at 10% 20%, rgba(0,0,0,.15) 0.6px, transparent 0.7px),
-    radial-gradient(circle at 70% 60%, rgba(0,0,0,.08) 0.6px, transparent 0.7px);
+    radial-gradient(circle at 10% 20%, rgba(0,60,0,.10) 0.6px, transparent 0.7px),
+    radial-gradient(circle at 70% 60%, rgba(0,60,0,.06) 0.6px, transparent 0.7px);
   background-size: 140px 140px;
-  opacity: .15;
+  opacity: .12;
   pointer-events: none;
   filter: contrast(110%);
 }
 
+/* ── Marquee / Skills ── */
 .marquee-left {
   animation: marquee-left 24s linear infinite;
 }
@@ -214,7 +435,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .neon-glow, .neon-scanlines, .neon-noise, .light-glow, .marquee-left, .marquee-right { animation: none !important; }
+  .neon-glow, .neon-scanlines, .neon-noise, .light-glow, .marquee-left, .marquee-right, .gradient-border::before, .preloader-ring, .preloader-text { animation: none !important; }
 }
 
 @keyframes blink {
