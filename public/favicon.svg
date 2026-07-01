@@ -1,26 +1,52 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
-    <!-- Gradient for a modern neon look -->
-    <linearGradient id="neonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#a78bfa" /> <!-- Violet 400 -->
-      <stop offset="100%" stop-color="#7c3aed" /> <!-- Violet 600 -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a1a0a"/>
+      <stop offset="100%" stop-color="#062010"/>
     </linearGradient>
-    
-    <!-- Outer Glow -->
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="16" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    <filter id="neonGlow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feFlood flood-color="#39ff14" flood-opacity="0.6" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-color="#39ff14" flood-opacity="0.3" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
     </filter>
   </defs>
 
-  <!-- Background base -->
-  <rect x="24" y="24" width="464" height="464" rx="120" fill="#060911" />
-  
-  <!-- Subtle inner border -->
-  <rect x="24" y="24" width="464" height="464" rx="120" fill="none" stroke="#27272a" stroke-width="8" />
+  <rect x="24" y="24" width="464" height="464" rx="112" fill="url(#bg)"/>
+  <rect x="28" y="28" width="456" height="456" rx="108" fill="none" stroke="#39ff14" stroke-width="3" opacity="0.15"/>
 
-  <!-- "YY" Typographic Logo -->
-  <g transform="translate(110, 360)" fill="url(#neonGradient)" filter="url(#glow)">
-    <path d="M125.6-212.8L63.2-12.8H21.6l44.8-132.8L-2-212.8h41.6L79.2-164l38.4-48.8h40zM250.4-212.8l-62.4,200h-41.6l44.8-132.8L124.8-212.8h41.6l40,48.8l38.4-48.8h39.2z" />
+  <line x1="80" y1="140" x2="80" y2="380" stroke="#39ff14" stroke-width="2" opacity="0.08"/>
+  <line x1="160" y1="100" x2="160" y2="420" stroke="#39ff14" stroke-width="2" opacity="0.08"/>
+  <line x1="240" y1="100" x2="240" y2="420" stroke="#39ff14" stroke-width="2" opacity="0.08"/>
+  <line x1="320" y1="100" x2="320" y2="420" stroke="#39ff14" stroke-width="2" opacity="0.08"/>
+  <line x1="400" y1="140" x2="400" y2="380" stroke="#39ff14" stroke-width="2" opacity="0.08"/>
+  <line x1="80" y1="200" x2="440" y2="200" stroke="#39ff14" stroke-width="2" opacity="0.06"/>
+  <line x1="80" y1="320" x2="440" y2="320" stroke="#39ff14" stroke-width="2" opacity="0.06"/>
+
+  <g filter="url(#neonGlow)">
+    <text x="256" y="310" text-anchor="middle" font-family="monospace, 'Courier New'" font-weight="900" font-size="260" fill="#39ff14" letter-spacing="-15">
+      Y
+    </text>
   </g>
+
+  <text x="110" y="200" font-family="monospace, 'Courier New'" font-size="42" fill="#39ff14" opacity="0.4" filter="url(#softGlow)">
+    &gt;_
+  </text>
+
+  <circle cx="400" cy="400" r="6" fill="#39ff14" opacity="0.5">
+    <animate attributeName="opacity" values="0.5;0.15;0.5" dur="2s" repeatCount="indefinite"/>
+  </circle>
 </svg>

@@ -13,6 +13,11 @@ body {
   margin: 0;
   font-family: var(--font-sans);
   overflow-x: hidden;
+  cursor: url('/calcifer-default.png'), default;
+}
+
+a, button, [role="button"], label, select, [tabindex] {
+  cursor: url('/calcifer-cursor.png'), pointer;
 }
 
 ::selection {
@@ -108,6 +113,7 @@ body {
   padding: 1.5px;
   background: conic-gradient(from var(--border-angle), transparent 25%, var(--gb-color1) 50%, var(--gb-color2) 75%, transparent 100%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   animation: rotate-border 4s linear infinite;
